@@ -27,7 +27,10 @@ services:
       - 9601:9601  # required for Performance Analyzer
     networks:
       - opensearch-net
-
+    build:
+      context: .
+      shm_size: '2gb'
+      
 volumes:
   opensearch-data2:
 
