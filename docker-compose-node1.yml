@@ -23,25 +23,14 @@ services:
     volumes:
       - opensearch-data1:/usr/share/opensearch/data1
     ports:
-      - 9200:9200
-      - 9600:9600  # required for Performance Analyzer
+      - 9201:9200
+      - 9601:9600  # required for Performance Analyzer
     networks:
       - opensearch-net
     build:
       context: .
       shm_size: '2gb'
-  opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
-    container_name: opensearch-dashboards
-    ports:
-      - 5601:5601
-    expose:
-      - '5601'
-    environment:
-      OPENSEARCH_HOSTS: '["http://opensearch-node1:9200","http://opensearch-node2:9201","http://opensearch-node3:9202"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
-    networks:
-      - opensearch-net
-
+      
 volumes:
   opensearch-data1:
 

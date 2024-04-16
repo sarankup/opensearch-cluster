@@ -23,8 +23,8 @@ services:
     volumes:
       - opensearch-data2:/usr/share/opensearch/data2
     ports:
-      - 9201:9201
-      - 9601:9601  # required for Performance Analyzer
+      - 9202:9200
+      - 9602:9600  # required for Performance Analyzer
     networks:
       - opensearch-net
     build:

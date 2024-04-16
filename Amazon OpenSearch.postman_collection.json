@@ -1,0 +1,952 @@
+{
+	"info": {
+		"_postman_id": "113d5c6b-dbc6-4f4a-9a3b-c8d8021e90f3",
+		"name": "Amazon OpenSearch",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "220513",
+		"_collection_link": "https://speeding-space-625262.postman.co/workspace/RestFul~1b823aa5-1af0-4138-ba64-be6e269ef9e1/collection/220513-113d5c6b-dbc6-4f4a-9a3b-c8d8021e90f3?action=share&source=collection_link&creator=220513"
+	},
+	"item": [
+		{
+			"name": "Search Autocomplete Functionality",
+			"item": [
+				{
+					"name": "Select by SQL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": \"SELECT * FROM test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/_plugins/_sql?format=json",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_plugins",
+								"_sql"
+							],
+							"query": [
+								{
+									"key": "format",
+									"value": "json"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Document",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"approach\": \"Is this <b>déjà vu</b>?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9200/testx/_doc",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"testx",
+								"_doc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Document",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:9200/test/_doc/abc123",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"test",
+								"_doc",
+								"abc123"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find Documents",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": {\n    \"term\": {\n      \"approach\": \"deja\"\n    }\n  }\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/snowball/_search",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"snowball",
+								"_search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Select by PPL",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"query\": \"source=test | where age=10 | fields name, age\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/_plugins/_ppl",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_plugins",
+								"_ppl"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Index",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"settings\": {\n        \"index\": {\n            \"number_of_shards\": 2,\n            \"number_of_replicas\": 2\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/snowball",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"snowball"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Indexing and Query Strategies",
+			"item": [
+				{
+					"name": "Delete index by id",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/texts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"texts"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "OpenSearch Customizations",
+			"item": [
+				{
+					"name": "Custom Filters",
+					"item": [
+						{
+							"name": "Snowball token filter index",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"settings\": {\n        \"analysis\": {\n            \"analyzer\": {\n                \"my_custom_snowball\": {\n                    \"type\": \"custom\",\n                    \"tokenizer\": \"standard\",\n                    \"filter\": [\n                        \"lowercase\",\n                        \"my_snow\"\n                    ]\n                }\n            },\n            \"filter\": {\n                \"my_snow\": {\n                    \"type\": \"snowball\",\n                    \"language\": \"English\"\n                }\n            },\n            \"normalizer\": {\n                \"normalized_keyword\": {\n                    \"type\": \"custom\",\n                    \"char_filter\": [],\n                    \"filter\": [\n                        \"asciifolding\",\n                        \"lowercase\"\n                    ]\n                }\n            }\n        }\n    },\n    \"mappings\": {\n        \"properties\": {\n            \"approach\": {\n                \"type\": \"text\",\n                \"analyzer\": \"my_custom_snowball\"\n            }\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9200/snowball",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"snowball"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Snowball token analyzer",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\":\"They came last week\",\n    \"analyzer\":\"my_custom_snowball\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9200/snowball/_analyze",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"snowball",
+										"_analyze"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Snowball token based search",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"query\": {\n        \"match\": {\n            \"approach\":\"the come last week\",\n            \"analyzer\":\"my_custom_snowball\"\n        }\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9200/snowball/_search",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"snowball",
+										"_search"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Snowball properties",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"text\":\"He will be comming tonight\",\n    \"analyzer\":\"my_custom_snowball\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9200/snowball/_analyze",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"snowball",
+										"_analyze"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Custom Analyzer",
+					"item": [
+						{
+							"name": "Search Custom Analyzer 1",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"query\": {\n    \"match\": {\n      \"approach\": {\n        \"query\": \"come\",\n        \"analyzer\": \"my_custom_snowball\"\n      }\n    }\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:9200/snowball/_search",
+									"host": [
+										"localhost"
+									],
+									"port": "9200",
+									"path": [
+										"snowball",
+										"_search"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tokenizer",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"normalizer\": \"normalized_keyword\",\n    \"text\": \"Is this <b>déjà vu</b>?\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9200/testx/_analyze?pretty",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"testx",
+								"_analyze"
+							],
+							"query": [
+								{
+									"key": "pretty",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GeoSpatial Queries",
+			"item": []
+		},
+		{
+			"name": "Cluster Management",
+			"item": [
+				{
+					"name": "Details",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "XXXXXXXXX",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200"
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find indexes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/_cat/indices?v",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_cat",
+								"indices"
+							],
+							"query": [
+								{
+									"key": "v",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9200/opensearch_dashboards_sample_data_ecommerce",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"opensearch_dashboards_sample_data_ecommerce"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Health",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=50s",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_cluster",
+								"health"
+							],
+							"query": [
+								{
+									"key": "wait_for_status",
+									"value": "yellow"
+								},
+								{
+									"key": "timeout",
+									"value": "50s"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Index With Mapping",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"settings\": {\n        \"analysis\": {\n            \"analyzer\": {\n                \"my_custom_analyzer\": {\n                    \"type\": \"custom\",\n                    \"tokenizer\": \"standard\",\n                    \"char_filter\": [\n                        \"html_strip\"\n                    ],\n                    \"filter\": [\n                        \"lowercase\",\n                        \"asciifolding\"\n                    ]\n                }\n            },\n            \"normalizer\": {\n                \"normalized_keyword\": {\n                    \"type\": \"custom\",\n                    \"char_filter\": [],\n                    \"filter\": [\n                        \"asciifolding\",\n                        \"lowercase\"\n                    ]\n                }\n            }\n        }\n    },\n    \"mappings\": {\n        \"properties\": {\n            \"approach\": {\n                \"type\": \"keyword\",\n                \"normalizer\": \"normalized_keyword\"\n            }\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/testx",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"testx"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Index",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"settings\": {\n        \"index\": {\n            \"number_of_shards\": 3,\n            \"number_of_replicas\": 2\n        }\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/testing",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"testing"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Index Exits",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "localhost:9200/test",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"test"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nodes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/_nodes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_nodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Shards of Index",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/_nodes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_nodes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cluster Manager",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/_cat/cluster_manager?v",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_cat",
+								"cluster_manager"
+							],
+							"query": [
+								{
+									"key": "v",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Performance and Monitoring",
+			"item": [
+				{
+					"name": "Performance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9600/_plugins/_performanceanalyzer/metrics",
+							"host": [
+								"localhost"
+							],
+							"port": "9600",
+							"path": [
+								"_plugins",
+								"_performanceanalyzer",
+								"metrics"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Plugins",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/_cat/plugins",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_cat",
+								"plugins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Performance Analyzer Enable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"enabled\": false}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9200/_plugins/_performanceanalyzer/cluster/config",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_plugins",
+								"_performanceanalyzer",
+								"cluster",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Performance Analyzer RCA Enable",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"enabled\": false}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9200/_plugins/_performanceanalyzer/rca/cluster/config",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_plugins",
+								"_performanceanalyzer",
+								"rca",
+								"cluster",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Slow Logs Setting",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "XXXXXXXXX",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "admin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"persistent\": {\n        \"cluster.search.request.slowlog.level\": \"TRACE\",\n        \"cluster.search.request.slowlog.threshold.warn\": \"10s\",\n        \"cluster.search.request.slowlog.threshold.info\": \"5s\",\n        \"cluster.search.request.slowlog.threshold.debug\": \"2s\",\n        \"cluster.search.request.slowlog.threshold.trace\": \"10ms\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:9200/_cluster/settings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_cluster",
+								"settings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Performance Analyzer Verify",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"enabled\": true}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:9200/_plugins/_performanceanalyzer/cluster/config",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"_plugins",
+								"_performanceanalyzer",
+								"cluster",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Performance Analyzer Metric Units",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9600/_plugins/_performanceanalyzer/metrics/units",
+							"host": [
+								"localhost"
+							],
+							"port": "9600",
+							"path": [
+								"_plugins",
+								"_performanceanalyzer",
+								"metrics",
+								"units"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Advanced Features",
+			"item": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "XXXXXXXXX",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "admin",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

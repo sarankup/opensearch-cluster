@@ -1,18 +1,16 @@
 from opensearchpy import OpenSearch
 from opensearch_dsl import Search, Document, Text, Keyword
 
-host = 'localhost'
-port = 9200
 
-auth = ('admin', 'opensearch-1996N2009S')  # For testing only. Don't store credentials in code.
+auth = ('admin', 'XXXXXXXXX')  # For testing only. Don't store credentials in code.
 ca_certs_path = 'root-ca.pem'
 
 # Create the client with SSL/TLS enabled, but hostname verification disabled.
 client = OpenSearch(
-    hosts=[{'host': host, 'port': port}],
+    hosts=[{'host': "localhost", 'port': 9200}],
     http_compress=True,  # enables gzip compression for request bodies
     http_auth=auth,
-    use_ssl=False,
+    use_ssl=True,
     verify_certs=False,
     ssl_assert_hostname=False,
     ssl_show_warn=False,
@@ -60,15 +58,17 @@ movies = '{ "index" : { "_index" : "my-dsl-index", "_id" : "2" } } \n { "title" 
 client.bulk(movies)
 
 # Search for the document.
-s = Search(using=client, index=index_name) \
-    .filter('term', year='2011') \
-    .query('match', title='Moneyball')
+for x in range(100000):
+    print(f"========{x}======")
+    s = Search(using=client, index=index_name) \
+        .filter('term', year='2011') \
+        .query('match', title='Moneyball')
 
-response = s.execute()
+    response = s.execute()
 
-print('\nSearch results:')
-for hit in response:
-    print(hit.meta.score, hit.title)
+    print('\nSearch results:')
+    for hit in response:
+        print(hit.meta.score, hit.title)
     
 # Delete the document.
 print('\nDeleting document:')

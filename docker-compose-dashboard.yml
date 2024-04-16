@@ -1,4 +1,3 @@
----
 version: '3'
 services:
   opensearch-dashboards:
@@ -9,12 +8,13 @@ services:
     expose:
       - '5601'
     environment:
-      OPENSEARCH_HOSTS: '["http://opensearch-node1:9200","http://opensearch-node2:9201","http://opensearch-node3:9202"]' # Define the OpenSearch nodes that OpenSearch Dashboards will query
+      - cluster.name=opensearch-cluster
+      - 'OPENSEARCH_HOSTS=["http://opensearch-node1:9200","http://opensearch-node2:9200","http://opensearch-node3:9200"]'
     networks:
       - opensearch-net
 
 volumes:
-  opensearch-data1:
+  opensearch-data:
 
 networks:
   opensearch-net:
